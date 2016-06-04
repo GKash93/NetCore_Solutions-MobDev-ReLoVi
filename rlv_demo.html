@@ -1,0 +1,67 @@
+<html>
+        <head>
+	   <h1> <font size = "6" align = "right"> Remote Log Viewer </font> </h1>	
+	   <p> Rule 1: All fields are mandatory. </p>
+	   <p> Rule 2: Submit will fetch the log entries.</p>
+           <p> Rule 3: Reset will clear or empty all selected feilds so that you may begin again. </p>
+	   <p> Rule 4: Runnning Log will fetch you the log entries in flow. </p>
+	
+	</head>
+	<body>
+	   <script type="text/javascript">
+		function configureDropDown(ddl1,ddl2) {
+			
+	  
+	   </script>
+	   <fieldset align = 'middle'> <p> Please set the query </p> <br>
+	   <form action= "http://127.0.0.1:5000/rlv/">
+	       Group :
+		     <select onchange="print_Group('Server', this.selectedIndex);" id="rows_s[2]">>
+		     {% set rows = f.get_groups() %}
+		     {% for row_g in rows: %}
+		         <option value= "{{ row_g[0] }}" SELECTED> {{ row_g[1] }}</option>
+		     {% endfor %}
+                    </select>
+
+		   </br> </br>
+	       Server : 
+		     <select onchange="print_state('LogFile', this.selectedIndex);" id="rows_lf[2]">
+		     {% set rows1 = f.get_servers() %}
+		     {% for row_s in rows1: %}
+   		         <option value= "{{ row_s[2] }}" SELECTED> {{ row_s[1] }}</option>
+		     {% endfor %}
+		   </select>
+		   </br> </br>
+	       Logfile : 
+		   <select id = "select3"> 
+		   {% set rows2 = f.get_logfiles() %}
+		     {% for row_lf in rows2: %}
+   		         <option value= "{{ row_lf[2] }}" SELECTED> {{ row_lf[1] }}</option>
+		   {% endfor %}				
+		   </select>
+		   </br></br>
+		   From Date: <input type = "calendar" name = "Calendar" placeholder = "From Date"> </br> </br>
+		   To Date: <input type = "calendar" name = "Calendar" placeholder = "To Date"> </br> </br>
+	   <form>			
+	   Having: <input type = "text" name = "Word" placeholder = "Word"> <input type = "checkbox" align = middle> </br>	</br> 			
+	   Having: <input type = "text" name = "Regex" placeholder = "REGEX"> <input type = "checkbox" align = middle> </br> 	
+	   </form>
+	   Not Having: <input type = "text" name = "Not Having" placeholder = "Word"> </br>
+			</br> 
+	   <form>
+               Number of Lines : <input type = "text" name = "No of Lines" placeholder = "No of Lines">
+	       Top: <input type = "checkbox" align = "middle"> 
+	       Bottom: <input type = "checkbox" align = "right"> </br>
+	   </form> 
+	   </br> </br>	
+	   SUBMIT : <input type = "submit" name = "SUBMIT" align = "left" > 
+
+	   RESET :	<input type = "reset" name = "RESET" align = "middle"> 
+
+ 	   Running Log: <input type = "Running_Log" name = "Running Log" align = "right"> </br>
+					
+	    <p> Thanks for using Remote Log Viewer; Have a nice day </p>
+	   </form>
+        </fieldset>
+    </body>
+</html>

@@ -1,0 +1,87 @@
+<html>
+    <head>
+	    <h1> <font size = "6" align = "right"> Remote Log Viewer </font> </h1>	
+	   <p> Rule 1: All fields are mandatory. </p>
+	   <p> Rule 2: Submit will fetch the log entries.</p>
+           <p> Rule 3: Reset will clear or empty all selected feilds so that you may begin again. </p>
+	   <p> Rule 4: Runnning Log will fetch you the log entries in flow. </p>
+	
+	</head>
+	<body>
+	<script type="text/javascript">
+    function MyFunction(Dynamic_Selection) { 
+        var group_id = Dynamic_Selection.value;
+
+
+  
+    }
+	</script>
+	   <fieldset align = 'middle'> <p> Please set the query </p> <br>
+	   <form>
+     {% set group_id = request.args['group_id'] %}
+     {% set server_id = request.args['server_id'] %}
+     {% set log_file = request.args['log_file'] %}
+
+		 Select Group : {{group_id}}
+		      <select name = "group_id">                
+		      {% set rows = f.get_groups() %}
+          <option value="">--Selected--</option>
+		      {% for row_g in rows: %}
+ 		            <option value= "{{row_g[0]}}" {% if row_g[0] == group_id %} selected="selected" {% endif %}> {{ row_g[1] }}</option>
+		      {% endfor %}
+              </select>
+
+		   </br> </br>
+		
+     
+     {% if group_id %}
+		 Select Server : {{server_id}}
+		        <select name = "server_id"> 
+                 <option value="">--Selected--</option>   
+		        {% set rows1 = f.get_servers(group_id) %}
+          
+		        {% for row_s in rows1: %}
+                 <option value= "{{row_s[0]}}"> {{ row_s[1] }}</option> 
+		        {% endfor %}
+		        </select>
+     {% endif %}
+		    </br> </br>
+		
+     
+     {% if server_id %}	       
+		 Select Logfile : {{log_file}}
+		        <select name = "log_file"> 
+		        {% set rows2 = f.get_logfiles(server_id) %}
+          <option value="">--Selected--</option>
+		        {% for row_lf in rows2: %}
+   		           <option value= "{{ row_lf[2] }}" > {{ row_lf[1] }}</option>
+		        {% endfor %}		 		
+		        </select>
+     {% endif %}
+		   </br></br>
+		   From Date: <input type = "calendar" name = "Calendar" placeholder = "From Date"> </br> </br>
+		   To Date: <input type = "calendar" name = "Calendar" placeholder = "To Date"> </br> </br>
+	 		
+	   Having: <input type = "text" name = "Word" placeholder = "Word"> <input type = "checkbox" align = middle> </br>	</br> 			
+	   Having: <input type = "text" name = "Regex" placeholder = "REGEX"> <input type = "checkbox" align = middle> </br> 	
+	 
+	   Not Having: <input type = "text" name = "Not Having" placeholder = "Word"> </br>
+			</br> 
+	  
+               Number of Lines : <input type = "text" name = "No of Lines" placeholder = "No of Lines">
+	       Top: <input type = "checkbox" align = "middle"> 
+	       Bottom: <input type = "checkbox" align = "right"> </br>
+	  
+	   </br> </br>	
+      
+	   SUBMIT : <input type = "submit" name = "SUBMIT" align = "left" > 
+
+	   RESET :	<input type = "reset" name = "RESET" align = "middle"> 
+
+ 	   Running Log: <input type = "Running_Log" name = "Running Log" align = "right"> </br>
+					
+	    <p> Thanks for using Remote Log Viewer; Have a nice day </p>
+	   </form>
+        </fieldset>
+    </body>
+</html>
