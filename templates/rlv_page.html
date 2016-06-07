@@ -1,0 +1,99 @@
+<html>
+    <head>
+    <h1> <font size = "6" align = "right"> Remote Log Viewer </font> </h1>	
+    <p> Rule 1: All fields are mandatory. </p>
+    <p> Rule 2: Submit will fetch the log entries.</p>
+    <p> Rule 3: Reset will clear or empty all selected feilds so that you may begin again. </p>
+    <p> Rule 4: Runnning Log will fetch you the log entries in flow. </p>	
+    </head>
+    <body>
+    <script type="text/javascript">
+        function MyFunction(Dynamic_Selection) { 
+            var group_id = Dynamic_Selection.value;
+	 }
+    </script>
+    <link rel="stylesheet" type="text/css" media="all" href="/static/jsDatePick_ltr.min.css" />
+    <script type="text/javascript" src="/static/jsDatePick.min.1.3.js"></script>
+        <script type="text/javascript">
+        window.onload = function(){
+                new JsDatePick({
+                        useMode:2,
+                        target:"frm_dt",
+                        dateFormat:"%Y-%M-%d"
+                });
+		new JsDatePick({
+                        useMode:2,
+                        target:"to_dt",
+                        dateFormat:"%Y-%M-%d"
+                });
+
+        };
+        </script>
+
+
+    <fieldset align = 'middle'> <p> Please set the query </p> <br>
+        <form>
+     {% set group_id = request.args.get('group_id',-1)|int %}
+     {% set server_id = request.args.get('server_id',-1)|int %}
+     {% set log_file = request.args.get('log_file',-1) %}
+
+		 Select Group :
+		      <select name = "group_id" onchange="this.form.submit()">                
+		      {% set row_gr = f.get_groups() %}
+              	      <option value="-1">--Selected--</option>
+		      {% for row_g in row_gr: %}
+			{% if row_g[0] == group_id %} 
+				<option value="{{row_g[0]}}" selected="selected">{{row_g[1]}}</option>
+			{% else %}
+				<option value="{{row_g[0]}}">{{row_g[1]}}</option>
+			{% endif %}
+
+		      {% endfor %}
+			  
+              </select>
+
+		   </br> </br>
+		
+     
+         {% if group_id %}
+		 Select Server : 
+		        <select name = "server_id" onchange="this.form.submit()"> 
+		        {% set row_sr = f.get_servers(group_id) %}
+                <option value="-1">--Selected--</option>   
+		        {% for row_s in row_sr: %}
+		 	  {% if row_s[0] == server_id %}  
+                               <option value="{{row_s[0]}}" selected="selected">{{row_s[1]}}</option>
+                        {% else %}
+                               <option value="{{row_s[0]}}">{{row_s[1]}}</option>
+                        {% endif %}
+		        {% endfor %}
+		        </select>
+         {% endif %}
+		    </br> </br>
+		
+     
+     {% if server_id %}	       
+		 Select Logfile : 
+		        <select name = "log_file"> 
+		        {% set row_lo = f.get_logfiles(server_id) %}
+                <option value="-1">--Selected--</option>
+		        {% for row_l in row_lo: %}
+   		            <option value= "{{ row_l[2] }}" > {{ row_l[1] }}</option>
+		        {% endfor %}		 		
+		        </select>
+     {% endif %}
+        </br></br>
+        From-Date: <input type='text' id='frm_dt' name='frm_dt' value='' class='date date_toggled' style='display: inline'>
+	To-Date: <input type='text' id='to_dt' name='to_dt' value='' class='date date_toggled' style='display: inline'> </br> </br>	 
+         Having: <input type = "text" id='Sel1' name = "Word" placeholder = "Word"> <input type = "checkbox" align = middle> </br></br> 	Having: <input type = "text" id='Sel2' name = "Regex" placeholder = "REGEX"> <input type = "checkbox" align = middle> </br> </br> 
+        Not Having: <input type = "text" id='Sel3' name = "Not Having" placeholder = "Word"> <input type = "checkbox" align = middle> </br></br> 
+        Number of Lines : <input id='NOL' type = "text" name = "No of Lines" placeholder = "No of Lines"> Top: <input type = "checkbox" align = "middle">Bottom: <input type = "checkbox" align = "right"> </br>
+	</br> </br>	
+	SUBMIT : <input type = "submit"  name = "SUBMIT" align = "left" > 
+	RESET :	 <input type = "reset" value="Reset"   align = "middle"> 
+ 	Running Log: <input type = "Button" name = "Running Log"  align = "right"> </br>				
+        <p> Thanks for using Remote Log Viewer; Have a nice day </p>
+    </form>
+    </fieldset>
+    </body>
+</html>

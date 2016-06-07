@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 #-----------------------------------------------------------------------------
 from flask import Flask, render_template, request, redirect, url_for
-import functions
+import functions, os
 app = Flask(__name__)
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+APP_STATIC = os.path.join(APP_ROOT, 'static')
 #------------------------------------------------------------------------------
 #Establish a route to Login Page
 @app.route('/login', methods = ['GET'])
@@ -21,8 +23,6 @@ def login():
 @app.route('/rlv', methods = ["GET","POST"])
 def rlv():
     return render_template('rlv_page.html', f = functions)
-  
 #---------------------------------------------------------------------------------
 if __name__ == '__main__':
 	app.run(debug = True)
-
