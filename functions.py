@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import psycopg2
+import salt.client
 
 conn = psycopg2.connect(database="relovi", user="postgres", password="ganesh", host="127.0.0.1", port="5432")
 #--------------------------------------------------------------------------------------
@@ -20,15 +21,31 @@ def get_servers(group_id):
     return row_sr	
 #-----------------------------------------------------------------------------------------    
 def get_logfiles(server_id):
-    query2 = " select id, appname, s_id from LogFiles where s_id= %s" % (int(server_id))
+    query2 = " select id,filename, appname, s_id from LogFiles where s_id= %s" % (int(server_id))
     cur.execute(query2)
     row_lo = cur.fetchall()
     return row_lo
-#--------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------
+def get_logfiles1(log_id):
+    ret_val = ''
+    if log_id:
+    	query2 = " select appname from LogFiles where id= %s" % (log_id)
+    	cur.execute(query2)
+    	row_lo = cur.fetchall()
+	if row_lo:
+	    ret_val = row_lo[0][0]
+    #app = row_lo[0][0]
+    return ret_val
+#------------------------------------------------------------------------------------------
+def salt_exec(cmd):
+    local = salt.client.LocalClient()
+    a = local.cmd('*', 'cmd.run', [cmd])
+    return a
+#-------------------------------------------------------------------------------
 if __name__ == "__main__":
     print "So far so good"
 #---------------------------------------------------------------------------------------------
-    row_g = get_groups()
+    row_gr = get_groups()
     for row_g in row_gr:
 	print row_g
 #---------------------------------------------------------------------------------------------
@@ -41,5 +58,3 @@ if __name__ == "__main__":
     row_l = get_logfiles()
     for row_l in row_lo:
 	print row_l
-
-

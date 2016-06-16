@@ -19,24 +19,20 @@
                 new JsDatePick({
                         useMode:2,
                         target:"frm_dt",
-                        dateFormat:"%Y-%M-%d"
+                        dateFormat:"%Y-%m-%d"
                 });
 		new JsDatePick({
                         useMode:2,
                         target:"to_dt",
-                        dateFormat:"%Y-%M-%d"
+                        dateFormat:"%Y-%m-%d"
                 });
-
         };
         </script>
-
-
     <fieldset align = 'middle'> <p> Please set the query </p> <br>
         <form>
      {% set group_id = request.args.get('group_id',-1)|int %}
      {% set server_id = request.args.get('server_id',-1)|int %}
      {% set log_file = request.args.get('log_file',-1) %}
-
 		 Select Group :
 		      <select name = "group_id" onchange="this.form.submit()">                
 		      {% set row_gr = f.get_groups() %}
@@ -47,14 +43,9 @@
 			{% else %}
 				<option value="{{row_g[0]}}">{{row_g[1]}}</option>
 			{% endif %}
-
 		      {% endfor %}
-			  
               </select>
-
 		   </br> </br>
-		
-     
          {% if group_id %}
 		 Select Server : 
 		        <select name = "server_id" onchange="this.form.submit()"> 
@@ -70,30 +61,28 @@
 		        </select>
          {% endif %}
 		    </br> </br>
-		
-     
      {% if server_id %}	       
 		 Select Logfile : 
 		        <select name = "log_file"> 
 		        {% set row_lo = f.get_logfiles(server_id) %}
                 <option value="-1">--Selected--</option>
 		        {% for row_l in row_lo: %}
-   		            <option value= "{{ row_l[2] }}" > {{ row_l[1] }}</option>
+   		            <option value= "{{ row_l[1] }}" > {{ row_l[2] }}</option>
 		        {% endfor %}		 		
 		        </select>
      {% endif %}
         </br></br>
         From-Date: <input type='text' id='frm_dt' name='frm_dt' value='' class='date date_toggled' style='display: inline'>
 	To-Date: <input type='text' id='to_dt' name='to_dt' value='' class='date date_toggled' style='display: inline'> </br> </br>	 
-         Having: <input type = "text" id='Sel1' name = "Word" placeholder = "Word"> <input type = "checkbox" align = middle> </br></br> 	Having: <input type = "text" id='Sel2' name = "Regex" placeholder = "REGEX"> <input type = "checkbox" align = middle> </br> </br> 
-        Not Having: <input type = "text" id='Sel3' name = "Not Having" placeholder = "Word"> <input type = "checkbox" align = middle> </br></br> 
-        Number of Lines : <input id='NOL' type = "text" name = "No of Lines" placeholder = "No of Lines"> Top: <input type = "checkbox" align = "middle">Bottom: <input type = "checkbox" align = "right"> </br>
+        Word: <input type='text' id='Sel1' name='Sel1' placeholder = "Word"> <input type = "checkbox" align = middle> </br></br> 	
+        Number of Lines : <input id='NOL' type='NOL' name='NOL'   placeholder = "No of Lines">  Top:<input type='radio' id='checkbox1' name='checkbox1' align = "middle">  Bottom:<input type='radio' id='checkbox2' name='checkbox2' align = "right"> </br>
 	</br> </br>	
-	SUBMIT : <input type = "submit"  name = "SUBMIT" align = "left" > 
-	RESET :	 <input type = "reset" value="Reset"   align = "middle"> 
- 	Running Log: <input type = "Button" name = "Running Log"  align = "right"> </br>				
-        <p> Thanks for using Remote Log Viewer; Have a nice day </p>
+ <input type='submit' name = "Submit" align = "left" ><input class = "reset" type="reset" value="Reset" align="middle"> <input type='Button' id='rl'value='Running-Log' name='rl' align="right"> </br>
     </form>
     </fieldset>
+    </br> </br>
+    <textarea rows="50" cols="50">
+	{{ r }}
+    </textarea>
     </body>
 </html>
